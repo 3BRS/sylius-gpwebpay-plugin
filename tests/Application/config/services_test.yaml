@@ -9,3 +9,19 @@ services:
 
     ThreeBRS\SyliusGPWebpayPaymentGatewayPlugin\Api\GPWebpayApiInterface:
         class: Tests\ThreeBRS\SyliusGPWebpayPaymentGatewayPlugin\Api\GPWebpayApiMock
+
+    # Disable UserContext check in AddItemToCartHandler for Behat tests.
+    # The handler's assertCartAccessible() reads from TokenStorage, which is
+    # empty during Behat setup-context command dispatch (the session-based
+    # SecurityService only sets a session cookie, not the in-memory token).
+    sylius_api.command_handler.cart.add_item_to_cart:
+        class: Sylius\Bundle\ApiBundle\CommandHandler\Cart\AddItemToCartHandler
+        arguments:
+            - '@sylius.repository.order'
+            - '@sylius.repository.product_variant'
+            - '@sylius.modifier.order'
+            - '@sylius.factory.order_item'
+            - '@sylius.modifier.order_item_quantity'
+            - null
+        tags:
+            - { name: messenger.message_handler, bus: sylius.command_bus }

@@ -6,11 +6,9 @@
          colors="true"
          bootstrap="tests/Application/config/bootstrap.php">
     <testsuites>
-        <testsuite name="AcmeSyliusExamplePlugin Test Suite">
-            <directory>tests</directory>
+        <testsuite name="Unit">
+            <directory>tests/Unit</directory>
         </testsuite>
-        <env name="APP_ENV" value="test"/>
-        <env name="SHELL_VERBOSITY" value="-1" />
     </testsuites>
 
     <php>

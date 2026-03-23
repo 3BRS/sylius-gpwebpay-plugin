@@ -63,7 +63,7 @@ final readonly class CaptureHttpResponseProvider implements HttpResponseProvider
                     ['hash' => $paymentRequest->getHash()],
                     UrlGeneratorInterface::ABSOLUTE_URL,
                 ),
-                'psd2' => null,
+                'psd2' => $orderForPayment->getPsd2(),
             ],
             $this->getMerchantNumber($gpWebPayConfig),
             $this->isSandbox($gpWebPayConfig),

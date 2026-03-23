@@ -18,7 +18,7 @@ interface GPWebpayApiInterface
      *    amount: int,
      *    currency: string|null,
      *    returnUrl: string,
-     *    psd2: string|void|null
+     *    psd2: array<string, mixed>|null
      * } $order
      * @param array<string>|null $allowedPaymentMethods
      *
