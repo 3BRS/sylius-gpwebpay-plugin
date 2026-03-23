@@ -3,6 +3,7 @@
 /composer.lock
 /symfony.lock
 /yarn.lock
+/phpunit_log/
 
 /etc/build/*
 !/etc/build/.gitkeep
