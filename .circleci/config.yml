@@ -1,7 +1,7 @@
 version: 2.1
 
 workflows:
-    sylius2.0-php8.2+:
+    sylius2.0-2.2-php8.2+:
         jobs:
             -   build:
                     name: php-<<matrix.php_version>>-sylius-<< matrix.sylius_version >>-symfony-<< matrix.symfony_version >>
@@ -15,6 +15,30 @@ workflows:
                             symfony_version:
                                 - "6.4"
                                 - "7.1"
+            -   build:
+                    name: php-<<matrix.php_version>>-sylius-<< matrix.sylius_version >>-symfony-<< matrix.symfony_version >>
+                    matrix:
+                        parameters:
+                            php_version:
+                                - "8.2"
+                                - "8.3"
+                            sylius_version:
+                                - "2.1"
+                            symfony_version:
+                                - "6.4"
+                                - "7.2"
+            -   build:
+                    name: php-<<matrix.php_version>>-sylius-<< matrix.sylius_version >>-symfony-<< matrix.symfony_version >>
+                    matrix:
+                        parameters:
+                            php_version:
+                                - "8.2"
+                                - "8.3"
+                            sylius_version:
+                                - "2.2"
+                            symfony_version:
+                                - "6.4"
+                                - "7.4"
 
 jobs:
     build:
