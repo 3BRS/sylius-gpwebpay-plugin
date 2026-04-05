@@ -1,3 +1,7 @@
+# 2.5
+
+- Add support for Sylius 2.1 and 2.2
+
 # 2.4
 
 - Rename package from `3brs/sylius-gpwebpay-payment-gateway-plugin` to `3brs/sylius-gpwebpay-plugin`

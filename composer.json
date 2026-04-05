@@ -19,13 +19,13 @@
         "ext-openssl": "*",
         "ext-simplexml": "*",
         "alcohol/iso4217": "^4.2",
-        "sylius/sylius": "2.0.*"
+        "sylius/sylius": "~2.0.6 || ~2.1.0 || ~2.2.0"
     },
     "require-dev": {
         "ext-intl": "*",
         "ext-pdo": "*",
         "ext-xml": "*",
-        "behat/behat": "^3.16",
+        "behat/behat": "^3.17",
         "dmore/behat-chrome-extension": "^1.4",
         "dmore/chrome-mink-driver": "^2.9",
         "friends-of-behat/mink": "^1.11",
