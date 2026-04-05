@@ -1,5 +1,6 @@
 # 2.5
 
+- Add support for PSD 2 security
 - Add support for Sylius 2.1 and 2.2
 - Drop support for Sylius 2.0
 
