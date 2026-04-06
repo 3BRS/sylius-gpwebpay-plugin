@@ -1,6 +1,7 @@
 # 2.5
 
 - Add support for Sylius 2.1 and 2.2
+- Drop support for Sylius 2.0
 
 # 2.4
 
