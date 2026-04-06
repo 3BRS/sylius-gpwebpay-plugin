@@ -1,14 +1,13 @@
 version: 2.1
 
 workflows:
-    sylius2.0-2.2-php8.2+:
+    sylius2.1-2.2-php8.2+:
         jobs:
             -   build:
                     name: php-<<matrix.php_version>>-sylius-<< matrix.sylius_version >>-symfony-<< matrix.symfony_version >>
                     matrix:
                         parameters:
-                            # Symfony 6.4 dropped due to doctrine/annotations compatibility issues with doctrine/orm 3.x
-                            sylius_version: [ "2.0", "2.1", "2.2" ]
+                            sylius_version: [ "2.1", "2.2" ]
                             php_version: [ "8.2", "8.3" ]
                             symfony_version: [ "7.4" ]
 
