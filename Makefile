@@ -11,8 +11,7 @@ init:
 		direnv allow; \
 	fi
 	docker compose up -d
-	rm -f composer.lock
-	./bin-docker/composer install --no-interaction
+	./bin-docker/composer update --no-interaction
 	@make var
 	./bin-docker/php ./bin/console doctrine:database:create --no-interaction --if-not-exists
 	./bin-docker/php ./bin/console doctrine:migrations:migrate --no-interaction
@@ -32,8 +31,7 @@ init-tests:
 		direnv allow; \
 	fi
 	docker compose up -d
-	rm -f composer.lock
-	./bin-docker/composer install --no-interaction
+	./bin-docker/composer update --no-interaction
 	rm -fr tests/Application/var/test
 	@make var
 	./bin-docker/php ./bin/console --env=test doctrine:database:drop --no-interaction --force --if-exists
