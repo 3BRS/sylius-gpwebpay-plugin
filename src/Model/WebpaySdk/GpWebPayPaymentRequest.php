@@ -6,6 +6,7 @@ namespace ThreeBRS\SyliusGPWebpayPaymentGatewayPlugin\Model\WebpaySdk;
 
 class GpWebPayPaymentRequest
 {
+    /** @var array<string, int|float|string> */
     protected array $params = [];
 
     /**
@@ -52,6 +53,8 @@ class GpWebPayPaymentRequest
 
     /**
      * Gives You all Request params
+     *
+     * @return array<string, int|float|string>
      */
     public function getParams(): array
     {
@@ -127,6 +130,7 @@ class GpWebPayPaymentRequest
                     $key = "key_$key";
                 }
 
+                assert($value === null || is_string($value));
                 $object->addChild((string) $key, $value);
             }
         }

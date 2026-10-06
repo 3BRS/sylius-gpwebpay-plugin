@@ -13,7 +13,7 @@ readonly class PaymentResponse
      *        prcode: int,
      *        srcode: int,
      *        resulttext: string,
-     *        merordernum: string|void,
+     *        merordernum?: string,
      * }
      */
     protected array $params;
@@ -32,17 +32,17 @@ readonly class PaymentResponse
         string $digest,
         string $digest1,
     ) {
-        // @phpstan-ignore-next-line
-        $this->params = [
-            ...[
-                'operation' => $operation,
-                'ordernumber' => $ordernumber,
-                'prcode' => $prcode,
-                'srcode' => $srcode,
-                'resulttext' => $resulttext,
-            ],
-            ...($merordernum !== null ? ['merordernum' => $merordernum] : []),
+        $params = [
+            'operation' => $operation,
+            'ordernumber' => $ordernumber,
+            'prcode' => $prcode,
+            'srcode' => $srcode,
+            'resulttext' => $resulttext,
         ];
+        if ($merordernum !== null) {
+            $params['merordernum'] = $merordernum;
+        }
+        $this->params = $params;
         $this->digest = $digest;
         $this->digest1 = $digest1;
     }
@@ -54,7 +54,7 @@ readonly class PaymentResponse
      *        prcode: int,
      *        srcode: int,
      *        resulttext: string,
-     *        merordernum: string|void,
+     *        merordernum?: string,
      * }
      */
     public function getParams(): array

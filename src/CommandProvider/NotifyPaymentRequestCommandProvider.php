@@ -29,6 +29,7 @@ readonly class NotifyPaymentRequestCommandProvider implements PaymentRequestComm
 
         if ($request instanceof Request) {
             // GPWebPay sends data via GET parameters
+            /** @var array<string, mixed> $responseData */
             $responseData = $request->query->all();
         }
 

@@ -1,4 +1,0 @@
-imports:
-    - suites/select_payment_method_checkout.yml
-    - suites/adding_payment_method.yml
-    - suites/payment_request_processing.yml

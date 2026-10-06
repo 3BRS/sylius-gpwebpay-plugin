@@ -31,6 +31,9 @@ final class GPWebpayGatewayConfigurationType extends AbstractType
 
     public const KEY_PRIVATE = 'keyPrivate';
 
+    /**
+     * @param array<string, string> $choices
+     */
     public function __construct(
         private readonly array $choices,
         private readonly TranslatorInterface $translator,
@@ -63,9 +66,9 @@ final class GPWebpayGatewayConfigurationType extends AbstractType
             ->add(self::MERCHANT_NUMBER, TextType::class, [
                 'label' => 'theebrs-sylius.gpwebpay_plugin.form.merchantNumber',
                 'constraints' => [
-                    new NotBlank([
-                        'groups' => ['sylius'],
-                    ]),
+                    new NotBlank(
+                        groups: ['sylius'],
+                    ),
                 ],
                 'attr' => [
                     'autocomplete' => 'off',
@@ -74,9 +77,9 @@ final class GPWebpayGatewayConfigurationType extends AbstractType
             ->add(self::KEY_PRIVATE_PASSWORD, TextType::class, [
                 'label' => 'theebrs-sylius.gpwebpay_plugin.form.keyPassword',
                 'constraints' => [
-                    new NotBlank([
-                        'groups' => ['sylius'],
-                    ]),
+                    new NotBlank(
+                        groups: ['sylius'],
+                    ),
                 ],
                 'attr' => [
                     'autocomplete' => 'off',
@@ -85,9 +88,9 @@ final class GPWebpayGatewayConfigurationType extends AbstractType
             ->add(self::KEY_PRIVATE, TextareaType::class, [
                 'label' => 'theebrs-sylius.gpwebpay_plugin.form.privateKey',
                 'constraints' => [
-                    new NotBlank([
-                        'groups' => ['sylius'],
-                    ]),
+                    new NotBlank(
+                        groups: ['sylius'],
+                    ),
                 ],
                 'attr' => [
                     'autocomplete' => 'off',
@@ -99,9 +102,12 @@ final class GPWebpayGatewayConfigurationType extends AbstractType
         ) {
             $data = $event->getData();
             assert(is_array($data) || $data instanceof \ArrayAccess);
+            $privateKey = $data[self::KEY_PRIVATE] ?? '';
+            $privateKeyPassword = $data[self::KEY_PRIVATE_PASSWORD] ?? '';
+            assert(is_string($privateKey) && is_string($privateKeyPassword));
             $signer = new Signer(
-                $data[self::KEY_PRIVATE] ?? '',
-                $data[self::KEY_PRIVATE_PASSWORD] ?? '',
+                $privateKey,
+                $privateKeyPassword,
                 '',
             );
             if (!$signer->isPrivateKeyAndPasswordValid()) {

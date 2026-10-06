@@ -1,3 +1,9 @@
+# 2.6
+
+- Add support for Sylius 2.3 and Symfony 8
+  - `CaptureHttpResponseProvider` and `StatusHttpResponseProvider` accept `Request` (Sylius 2.3 `HttpResponseProviderInterface`) and `RequestConfiguration` (Sylius 2.1 and 2.2)
+  - `GPWebpayApi::retrieve()` reads the GP webpay response from query parameters only
+
 # 2.5
 
 - Add support for PSD 2 security

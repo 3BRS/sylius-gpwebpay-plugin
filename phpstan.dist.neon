@@ -7,14 +7,14 @@ parameters:
 
     excludePaths:
         # Makes PHPStan crash
-        - 'src/DependencyInjection/Configuration.php'
+        - 'src/DependencyInjection/Configuration.php (?)'
 
         # Test dependencies
         - 'tests/Application/src/Kernel.php'
         - 'tests/Application/config/bootstrap.php'
         - 'tests/Application/node_modules'
         - 'tests/Application/var'
-        - 'tests/Application/config/sylius'
+        - 'tests/Application/config/sylius (?)'
         - 'tests/Application/config/reference.php'
         - 'tests/Behat'
 

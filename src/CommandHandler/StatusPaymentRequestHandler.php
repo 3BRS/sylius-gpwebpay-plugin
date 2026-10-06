@@ -35,7 +35,6 @@ final readonly class StatusPaymentRequestHandler
         $paymentRequest = $this->paymentRequestProvider->provide($statusPaymentRequest);
 
         $payment = $paymentRequest->getPayment();
-        assert($payment !== null, 'PaymentRequest must have a payment associated.');
         assert($payment instanceof PaymentInterface);
 
         $gpWebPayConfig = $paymentRequest->getPayment()->getMethod()?->getGatewayConfig()?->getConfig();

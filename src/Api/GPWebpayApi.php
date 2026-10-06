@@ -111,17 +111,17 @@ class GPWebpayApi implements GPWebpayApiInterface
         $request = $this->requestStack->getMainRequest();
         assert($request !== null);
 
-        $operation = (string) $request->get('OPERATION');
-        $ordernumber = (string) $request->get('ORDERNUMBER');
-        $merordernum = $request->get('MERORDERNUM');
+        $operation = (string) $request->query->get('OPERATION');
+        $ordernumber = (string) $request->query->get('ORDERNUMBER');
+        $merordernum = $request->query->get('MERORDERNUM');
         $merordernum = $merordernum !== null
             ? (string) $merordernum
             : null;
-        $prcode = (int) $request->get('PRCODE');
-        $srcode = (int) $request->get('SRCODE');
-        $resulttext = (string) $request->get('RESULTTEXT');
-        $digest = (string) $request->get('DIGEST');
-        $digest1 = (string) $request->get('DIGEST1');
+        $prcode = (int) $request->query->get('PRCODE');
+        $srcode = (int) $request->query->get('SRCODE');
+        $resulttext = (string) $request->query->get('RESULTTEXT');
+        $digest = (string) $request->query->get('DIGEST');
+        $digest1 = (string) $request->query->get('DIGEST1');
 
         $response = new PaymentResponse($operation, $ordernumber, $merordernum, $prcode, $srcode, $resulttext, $digest, $digest1);
 

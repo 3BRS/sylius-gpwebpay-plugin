@@ -72,7 +72,6 @@ final readonly class NotifyPaymentRequestHandler
 
             if ($responseData['OPERATION'] === 'CREATE_ORDER') {
                 $payment = $paymentRequest->getPayment();
-                assert($payment !== null, 'Payment must not be null when processing successful payment request');
                 if ($this->stateMachine->can(
                     $payment,
                     PaymentTransitions::GRAPH,

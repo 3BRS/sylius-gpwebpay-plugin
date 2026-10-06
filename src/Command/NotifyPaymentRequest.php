@@ -15,6 +15,9 @@ class NotifyPaymentRequest implements PaymentRequestHashAwareInterface
 {
     use PaymentRequestHashAwareTrait;
 
+    /**
+     * @param array<string, mixed> $responseData
+     */
     public function __construct(
         ?string $hash,
         private readonly array $responseData = [],
@@ -22,6 +25,9 @@ class NotifyPaymentRequest implements PaymentRequestHashAwareInterface
         $this->hash = $hash;
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function getResponseData(): array
     {
         return $this->responseData;
