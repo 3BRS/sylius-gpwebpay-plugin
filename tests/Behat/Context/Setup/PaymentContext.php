@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\ThreeBRS\SyliusGPWebpayPaymentGatewayPlugin\Behat\Context\Setup;
 
 use Behat\Behat\Context\Context;
+use Behat\Step\Given;
 use Doctrine\Persistence\ObjectManager;
 use Sylius\Behat\Service\SharedStorageInterface;
 use Sylius\Bundle\CoreBundle\Fixture\Factory\ExampleFactoryInterface;
@@ -22,9 +23,7 @@ final readonly class PaymentContext implements Context
     ) {
     }
 
-    /**
-     * @Given the store allows paying with name :paymentMethodName and code :paymentMethodCode gpwebpay gateway
-     */
+    #[Given('the store allows paying with name :paymentMethodName and code :paymentMethodCode gpwebpay gateway')]
     public function theStoreHasPaymentMethodWithCodeAndGPWebpayCheckoutGateway(
         string $paymentMethodName,
         string $paymentMethodCode,

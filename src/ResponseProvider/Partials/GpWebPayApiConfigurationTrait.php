@@ -81,6 +81,9 @@ trait GpWebPayApiConfigurationTrait
             );
         }
 
-        return $gpWebPayConfig[$key];
+        $value = $gpWebPayConfig[$key];
+        assert($value === null || is_scalar($value) || is_array($value));
+
+        return $value;
     }
 }

@@ -5,7 +5,7 @@
 # Usage:
 #   ./bin/ci-matrix.sh                    # run all combos
 #   ./bin/ci-matrix.sh 2.2 7.4            # run single combo (sylius symfony)
-#   ./bin/ci-matrix.sh 2.0 6.4 lowest     # run single combo, only prefer-lowest
+#   ./bin/ci-matrix.sh 2.3 8.1 lowest     # run single combo, only prefer-lowest
 
 set -euo pipefail
 IFS=$'\n\t'
@@ -14,12 +14,10 @@ cd "$(dirname "$DIR")"
 
 # Define the matrix: sylius_version:symfony_version
 ALL_COMBOS=(
-    "2.0:6.4"
-    "2.0:7.1"
-    "2.1:6.4"
-    "2.1:7.2"
-    "2.2:6.4"
+    "2.1:7.4"
     "2.2:7.4"
+    "2.3:7.4"
+    "2.3:8.1"
 )
 
 FILTER_SYLIUS="${1:-}"
@@ -47,18 +45,24 @@ run_combo() {
     # Pin Sylius version
     ./bin-docker/composer require "sylius/sylius:${sylius_version}.*" --no-interaction --no-update --no-scripts
 
-    # Pin Symfony version for all symfony/* packages (except flex and webpack-encore-bundle)
-    local symfony_packages
-    symfony_packages=$(grep -o -E '"(symfony/[^"]+)"' composer.json | grep -v -E '(symfony/flex|symfony/webpack-encore-bundle)' | xargs printf '%s:'"${symfony_version}"'.* ')
-    # shellcheck disable=SC2086
-    ./bin-docker/composer require ${symfony_packages} --no-interaction --no-update
+    # Pin Symfony version for all symfony/* packages including transitive ones (global Flex)
+    ./bin-docker/composer config extra.symfony.require "${symfony_version}.*"
+    ./bin-docker/composer global config --no-plugins allow-plugins.symfony/flex true
+    ./bin-docker/composer global require --no-progress --no-scripts --no-plugins symfony/flex
+
+    # Sylius 2.1 and 2.2 Behat contexts need Behat 3, their admin and shop assets Encore 5
+    if [[ "${sylius_version}" =~ ^2\.[12]$ ]]; then
+        ./bin-docker/composer require --dev "behat/behat:^3.34" --no-interaction --no-update --no-scripts
+        cp tests/Application/package.json tests/Application/package.json.backup
+        ./bin-docker/docker-bash -c "cd tests/Application && npm pkg set 'devDependencies.@symfony/webpack-encore=^5.0.1'"
+    fi
 
     # Install dependencies
-    rm -f composer.lock
+    rm -fr composer.lock vendor
     if [ "$strategy" = "prefer-lowest" ]; then
-        ./bin-docker/composer update --no-interaction --prefer-lowest --no-plugins
+        ./bin-docker/composer update --no-interaction --prefer-lowest
     else
-        ./bin-docker/composer update --no-interaction --prefer-dist --no-plugins
+        ./bin-docker/composer update --no-interaction --prefer-dist
     fi
 
     # Prepare test environment
@@ -94,8 +98,11 @@ run_combo_safe() {
         RESULTS+=("${RED}❌ FAILED: ${label}${NC}")
     fi
 
-    # Restore composer.json from git so next combo starts clean
+    # Restore composer.json from git and package.json from its backup so next combo starts clean
     git checkout -- composer.json
+    if [ -f tests/Application/package.json.backup ]; then
+        mv tests/Application/package.json.backup tests/Application/package.json
+    fi
 }
 
 # Build list of combos to run

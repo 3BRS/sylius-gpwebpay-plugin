@@ -6,7 +6,7 @@ namespace ThreeBRS\SyliusGPWebpayPaymentGatewayPlugin\Model\WebpaySdk;
 
 class Signer implements SignerInterface
 {
-    private ?\OpenSSLAsymmetricKey $privateKeyResource;
+    private ?\OpenSSLAsymmetricKey $privateKeyResource = null;
 
     private string $publicKey;
 
@@ -45,6 +45,8 @@ class Signer implements SignerInterface
     }
 
     /**
+     * @param array<string, scalar|null> $params
+     *
      * @throws SignerException
      */
     public function sign(array $params): string
@@ -53,11 +55,14 @@ class Signer implements SignerInterface
         if (!openssl_sign($digestText, $digest, $this->getPrivateKeyResource())) {
             throw new SignerException('Failed to sign the data.');
         }
+        assert(is_string($digest));
 
         return base64_encode($digest);
     }
 
     /**
+     * @param array<string, scalar|null> $params
+     *
      * @throws SignerException
      */
     public function verify(

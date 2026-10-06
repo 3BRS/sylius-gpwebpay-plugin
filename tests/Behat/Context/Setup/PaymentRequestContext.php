@@ -5,6 +5,9 @@ declare(strict_types=1);
 namespace Tests\ThreeBRS\SyliusGPWebpayPaymentGatewayPlugin\Behat\Context\Setup;
 
 use Behat\Behat\Context\Context;
+use Behat\Step\Given;
+use Behat\Step\Then;
+use Behat\Step\When;
 use Doctrine\Persistence\ObjectManager;
 use Sylius\Abstraction\StateMachine\StateMachineInterface;
 use Sylius\Behat\Service\SharedStorageInterface;
@@ -67,9 +70,7 @@ final readonly class PaymentRequestContext implements Context
         assert($gpWebpayApi instanceof GPWebpayApiMock, 'GPWebpayApiInterface must be an instance of GPWebpayApiMock for testing purposes');
     }
 
-    /**
-     * @Given I have placed an order with :paymentMethodName payment method
-     */
+    #[Given('I have placed an order with :paymentMethodName payment method')]
     public function iHavePlacedAnOrderWithPaymentMethod(string $paymentMethodCode): void
     {
         $paymentMethod = $this->paymentMethodRepository->findOneBy(['code' => $paymentMethodCode]);
@@ -86,9 +87,7 @@ final readonly class PaymentRequestContext implements Context
         $this->objectManager->flush();
     }
 
-    /**
-     * @Given the order has a notify payment request in :state state
-     */
+    #[Given('the order has a notify payment request in :state state')]
     public function thePaymentRequestIsInState(string $state): void
     {
         $order = $this->sharedStorage->get('order');
@@ -109,9 +108,7 @@ final readonly class PaymentRequestContext implements Context
         $this->sharedStorage->set('payment_request', $paymentRequest);
     }
 
-    /**
-     * @When GPWebPay sends a successful payment notification
-     */
+    #[When('GPWebPay sends a successful payment notification')]
     public function gpwebpaySendsASuccessfulPaymentNotification(): void
     {
         $paymentRequest = $this->sharedStorage->get('payment_request');
@@ -150,9 +147,7 @@ final readonly class PaymentRequestContext implements Context
         $this->sharedStorage->set('response', $response);
     }
 
-    /**
-     * @When GPWebPay sends a failed payment notification
-     */
+    #[When('GPWebPay sends a failed payment notification')]
     public function gpwebpaySendsAFailedPaymentNotification(): void
     {
         $paymentRequest = $this->sharedStorage->get('payment_request');
@@ -187,9 +182,7 @@ final readonly class PaymentRequestContext implements Context
         $this->sharedStorage->set('response', $this->client->getResponse());
     }
 
-    /**
-     * @Then the payment request should be completed
-     */
+    #[Then('the payment request should be completed')]
     public function thePaymentRequestShouldBeCompleted(): void
     {
         $paymentRequest = $this->sharedStorage->get('payment_request');
@@ -204,9 +197,7 @@ final readonly class PaymentRequestContext implements Context
         }
     }
 
-    /**
-     * @Then the payment request should be failed
-     */
+    #[Then('the payment request should be failed')]
     public function thePaymentRequestShouldBeFailed(): void
     {
         $paymentRequest = $this->sharedStorage->get('payment_request');
@@ -226,9 +217,7 @@ final readonly class PaymentRequestContext implements Context
         }
     }
 
-    /**
-     * @Then the order should be marked as paid
-     */
+    #[Then('the order should be marked as paid')]
     public function theOrderShouldBeMarkedAsPaid(): void
     {
         $order = $this->sharedStorage->get('order');
@@ -242,9 +231,7 @@ final readonly class PaymentRequestContext implements Context
         }
     }
 
-    /**
-     * @Then the order should remain unpaid
-     */
+    #[Then('the order should remain unpaid')]
     public function theOrderShouldRemainUnpaid(): void
     {
         $order = $this->sharedStorage->get('order');

@@ -30,7 +30,10 @@ class GPWebpayApiMock implements GPWebpayApiInterface
             'Verify response callback must be set before calling verifyResponse',
         );
 
-        return call_user_func($this->verifyResponseCallback, $responseData, $config);
+        $isValid = call_user_func($this->verifyResponseCallback, $responseData, $config);
+        assert(is_bool($isValid));
+
+        return $isValid;
     }
 
     public function setVerifyResponseCallback(callable $callback): void

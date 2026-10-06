@@ -15,6 +15,9 @@ class GpWebPayOrderNumberProvider implements GpWebPayOrderNumberProviderInterfac
 
     public function provideOrderNumber(PaymentInterface $payment): string | int
     {
-        return ($payment->getOrder()?->getNumber() ?? $payment->getId()) . $this->clock->now()->format('His');
+        $number = $payment->getOrder()?->getNumber() ?? $payment->getId();
+        assert($number === null || is_scalar($number));
+
+        return $number . $this->clock->now()->format('His');
     }
 }
