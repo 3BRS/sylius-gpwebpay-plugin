@@ -12,6 +12,9 @@ IFS=$'\n\t'
 DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "$(dirname "$DIR")"
 
+# Global Flex is installed into the php container, all bin-docker calls must reach the same running container
+docker compose up -d
+
 # Define the matrix: sylius_version:symfony_version
 ALL_COMBOS=(
     "2.1:7.4"

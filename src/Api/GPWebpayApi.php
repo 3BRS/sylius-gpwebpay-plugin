@@ -6,6 +6,7 @@ namespace ThreeBRS\SyliusGPWebpayPaymentGatewayPlugin\Api;
 
 use Alcohol\ISO4217;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\HttpFoundation\InputBag;
 use Symfony\Component\HttpFoundation\RequestStack;
 use ThreeBRS\SyliusGPWebpayPaymentGatewayPlugin\Model\WebpaySdk\Api;
 use ThreeBRS\SyliusGPWebpayPaymentGatewayPlugin\Model\WebpaySdk\GpWebPayPaymentRequest;
@@ -111,17 +112,20 @@ class GPWebpayApi implements GPWebpayApiInterface
         $request = $this->requestStack->getMainRequest();
         assert($request !== null);
 
-        $operation = (string) $request->query->get('OPERATION');
-        $ordernumber = (string) $request->query->get('ORDERNUMBER');
-        $merordernum = $request->query->get('MERORDERNUM');
+        // GP webpay returns the response by GET or POST, the same way the payment request was sent
+        $parameters = new InputBag($request->query->all() + $request->request->all());
+
+        $operation = (string) $parameters->get('OPERATION');
+        $ordernumber = (string) $parameters->get('ORDERNUMBER');
+        $merordernum = $parameters->get('MERORDERNUM');
         $merordernum = $merordernum !== null
             ? (string) $merordernum
             : null;
-        $prcode = (int) $request->query->get('PRCODE');
-        $srcode = (int) $request->query->get('SRCODE');
-        $resulttext = (string) $request->query->get('RESULTTEXT');
-        $digest = (string) $request->query->get('DIGEST');
-        $digest1 = (string) $request->query->get('DIGEST1');
+        $prcode = (int) $parameters->get('PRCODE');
+        $srcode = (int) $parameters->get('SRCODE');
+        $resulttext = (string) $parameters->get('RESULTTEXT');
+        $digest = (string) $parameters->get('DIGEST');
+        $digest1 = (string) $parameters->get('DIGEST1');
 
         $response = new PaymentResponse($operation, $ordernumber, $merordernum, $prcode, $srcode, $resulttext, $digest, $digest1);
 
